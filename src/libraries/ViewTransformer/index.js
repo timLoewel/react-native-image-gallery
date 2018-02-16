@@ -22,7 +22,8 @@ export default class ViewTransformer extends React.Component {
         onSingleTapConfirmed: PropTypes.func,
         onLayout: PropTypes.func,
         onTransformStart: PropTypes.func,
-        children: PropTypes.node
+        children: PropTypes.node,
+        maxScaleDoubleTap: PropTypes.number
     };
 
     static defaultProps = {
@@ -31,6 +32,7 @@ export default class ViewTransformer extends React.Component {
         enableTranslate: true,
         enableTransform: true,
         maxScale: 1,
+        maxScaleDoubleTap: 1,
         enableResistance: false
     };
 
@@ -309,10 +311,10 @@ export default class ViewTransformer extends React.Component {
     performDoubleTapUp (pivotX, pivotY) {
         let curScale = this.state.scale;
         let scaleBy;
-        if (curScale > (1 + this.props.maxScale) / 2) {
+        if (curScale > (1 + this.props.maxScaleDoubleTap) / 2) {
             scaleBy = 1 / curScale;
         } else {
-            scaleBy = this.props.maxScale / curScale;
+            scaleBy = this.props.maxScaleDoubleTap / curScale;
         }
 
         let rect = transformedRect(

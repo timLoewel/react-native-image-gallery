@@ -22,7 +22,9 @@ export default class TransformableImage extends PureComponent {
         onViewTransformed: PropTypes.func,
         imageComponent: PropTypes.func,
         resizeMode: PropTypes.string,
-        errorComponent: PropTypes.func
+        errorComponent: PropTypes.func,
+        maxScaleDoubleTap: PropTypes.number,
+        maxScale: PropTypes.number
     };
 
     static defaultProps = {
@@ -30,7 +32,9 @@ export default class TransformableImage extends PureComponent {
         enableScale: true,
         enableTranslate: true,
         imageComponent: undefined,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        maxScaleDoubleTap: 1,
+        maxScale: 1
     };
 
     static cachedDimensions = {};
@@ -153,7 +157,7 @@ export default class TransformableImage extends PureComponent {
 
     render () {
         const { imageDimensions, viewWidth, viewHeight, error, errorInfo, keyAccumulator, imageLoaded } = this.state;
-        const { style, image, imageComponent, resizeMode, enableTransform, enableScale, enableTranslate, onTransformGestureReleased, onViewTransformed } = this.props;
+        const { maxScaleDoubleTap, style, image, imageComponent, resizeMode, enableTransform, enableScale, enableTranslate, onTransformGestureReleased, onViewTransformed } = this.props;
 
         let maxScale = 1;
         let contentAspectRatio;
@@ -163,7 +167,6 @@ export default class TransformableImage extends PureComponent {
             width = imageDimensions.width;
             height = imageDimensions.height;
         }
-
         if (width && height) {
             contentAspectRatio = width / height;
             if (viewWidth && viewHeight) {
@@ -202,7 +205,8 @@ export default class TransformableImage extends PureComponent {
               enableResistance={true}
               onTransformGestureReleased={onTransformGestureReleased}
               onViewTransformed={onViewTransformed}
-              maxScale={maxScale}
+              maxScale={this.props.maxScale === maxScale ? maxScale : this.props.maxScale}
+              maxScaleDoubleTap={maxScaleDoubleTap}
               contentAspectRatio={contentAspectRatio}
               onLayout={this.onLayout}
               style={style}>
