@@ -30,6 +30,7 @@ export default class ViewPager extends PureComponent {
         onPageSelected: PropTypes.func,
         onPageScrollStateChanged: PropTypes.func,
         onPageScroll: PropTypes.func,
+        	keyExtractor: PropTypes.func,
         flatListProps: PropTypes.object
     };
 
@@ -59,7 +60,7 @@ export default class ViewPager extends PureComponent {
         this.onResponderMove = this.onResponderMove.bind(this);
         this.onResponderRelease = this.onResponderRelease.bind(this);
         this.getItemLayout = this.getItemLayout.bind(this);
-
+        this.keyExtractor = this.props.keyExtractor || this.defaultKeyExtractor;
         this.scroller = this.createScroller();
     }
 
@@ -250,8 +251,8 @@ export default class ViewPager extends PureComponent {
         };
     }
 
-    keyExtractor (item, index) {
-        return index;
+    defaultKeyExtractor (item, index) {
+	      return index;
     }
 
     renderRow ({ item, index }) {
@@ -323,3 +324,4 @@ export default class ViewPager extends PureComponent {
         );
     }
 }
+
